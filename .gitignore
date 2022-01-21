@@ -51,6 +51,15 @@ coverage.xml
 .pytest_cache/
 cover/
 
+# Compiled python modules.
+*.pyc
+
+# Setuptools distribution folder.
+/dist/
+
+# Python egg metadata, regenerated from source files by setuptools.
+/*.egg-info
+
 # Translations
 *.mo
 *.pot
