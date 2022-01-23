@@ -56,17 +56,17 @@ If i just process it without giving any args, i have this :
 
 `py -m image_frame -i my_image.jpeg`
 
-<img src=".\docs\images\image_framed.jpg" style="width:400px;"/>
+<img src="https://github.com/Elsombrerobot/image_frame/blob/main/docs/images/image_framed.jpg" style="width:400px;"/>
 
 If i want to add a **square frame**, the **exifs at the top**, my instagram **tag at the bottom** , and have an image of **size** 2048 * 2048 : 
 
 `py -m image_frame -i my_image.jpeg --frame-shape square --tag-exifs top --description '@iammarcferrer' bottom --size 2048` 
 
-<img src=".\docs\images\custom_framed_image.jpg" style="width:400px;"/>
+<img src="https://github.com/Elsombrerobot/image_frame/blob/main/docs/images/custom_framed_image.jpg" style="width:400px;"/>
 
 If you like colors it is also possible :
 `py -m image_frame -i my_image.jpeg --frame-color gold --description 'blue' bottom --font-color green` 
 
-<img src=".\docs\images\color_framed_image.jpg" style="width:400px;"/>
+<img src="https://github.com/Elsombrerobot/image_frame/blob/main/docs/images/color_framed_image.jpg" style="width:400px;"/>
 
 You can visit [@iammarcferrer](https://www.instagram.com/iammarcferrer/) on instagram, where i use it all the time.
