@@ -11,6 +11,12 @@ This program provides simple cli for framing jpeg and png images.
 
 Tested only on windows 10.
 
+## Installation 
+
+https://pypi.org/project/image-frame/
+
+`pip install image-frame`
+
 ## Commands
 - `--help` , `-h`
   - Show help.
