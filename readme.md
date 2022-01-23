@@ -5,6 +5,10 @@ Frame your images.
 ------------------
 This program provides simple cli for framing jpeg and png images.
 
+## Requirements
+- Python 3.7 or superior.
+- Pillow 9.0.0.
+
 ## Commands
 - `--help` , `-h`
   - Show help.
