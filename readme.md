@@ -40,7 +40,7 @@ Tested only on windows 10.
 - `@`
   - A txt file containing a list of args. The args must be one by line :
     - --size
-    - 15
+    - 2048
     - --frame-color
     - purple
     - ...
