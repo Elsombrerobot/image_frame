@@ -69,4 +69,4 @@ If you like colors it is also possible :
 
 <img src=".\docs\images\color_framed_image.jpg" style="width:400px;"/>
 
-You can visit @iammarcferrer on instagram, where i use it all the time.
+You can visit [@iammarcferrer](https://www.instagram.com/iammarcferrer/) on instagram, where i use it all the time.
