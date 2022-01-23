@@ -49,6 +49,7 @@ Tested only on windows 10.
 ## Exemples
 
 Here i have this image **my_image.jpeg** :
+
 <img src="https://github.com/Elsombrerobot/image_frame/blob/main/docs/images/original_image.jpg" style="width:400px;"/>
 
 If i just process it without giving any args, i have this :
