@@ -1,4 +1,4 @@
-from PIL import ExifTags, Image, ImageColor
+from PIL import Image, ImageColor
 
 COLORS = [name for name, _ in ImageColor.colormap.items()]
 

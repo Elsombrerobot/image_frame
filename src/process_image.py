@@ -130,8 +130,8 @@ def tag_text(
         )
 
     draw = ImageDraw.Draw(img)
-    text = text.lower().strip("'")
-    draw.text(offset, text.lower(), font=font, fill=font_color)
+    text = text.strip("'")
+    draw.text(offset, text, font=font, fill=font_color)
     return img
 
 
@@ -150,7 +150,7 @@ def tag_exifs(
         + exifs["exposure"]
         + " "
         + exifs["iso"]
-    )
+    ).lower()
     return tag_text(img, exif_stamp, location, font_size, font_color)
 
 
@@ -159,7 +159,7 @@ def process_image(source: Path, dest: Path, args):
     img = Image.open(source)
 
     # Add frame to the image
-    percentaged_border_size = round(max(img.size) / 100) * args.frame_size
+    percentaged_border_size = round((max(img.size) / 100) * args.frame_size)
     img = add_frame(img, args.color, percentaged_border_size, args.frame_shape)
 
     # Resize the image

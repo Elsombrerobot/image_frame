@@ -1,5 +1,7 @@
 import argparse
 
+from config import VALID_FRAME_SHAPES, VALID_LOCATIONS
+
 parser = argparse.ArgumentParser(
     description="Frame images . Work only with jpeg and png.",
     usage="image_frame [options], use @file.txt for text file arguments.",
@@ -45,7 +47,7 @@ parser.add_argument(
     "-fs",
     "--frame-size",
     dest="frame_size",
-    type=int,
+    type=float,
     default="5",
     help=(
         "Specify the size of the frame, as precentage of the greater size of"
@@ -60,6 +62,7 @@ parser.add_argument(
     default="same",
     type=str,
     help="Specify the shape of the frame. Values : same, square.",
+    choices=VALID_FRAME_SHAPES,
 )
 
 parser.add_argument(
@@ -70,7 +73,7 @@ parser.add_argument(
     default="white",
     help=(
         "Specify the color of the frame. Values : median (see -ac,"
-        " --available_colors for all colors) (to implement : acrylic, median)."
+        " --available_colors for all colors) (to implement : acrylic)."
     ),
 )
 
@@ -83,6 +86,7 @@ parser.add_argument(
         "Tag the frame with exif tag at the given location if one location arg"
         " is specified. Values : top, bottom"
     ),
+    choices=VALID_LOCATIONS,
 )
 
 parser.add_argument(
