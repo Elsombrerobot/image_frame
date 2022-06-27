@@ -23,12 +23,7 @@ parser.add_argument(
     "--output",
     dest="output",
     type=str,
-    help=(
-        "Exemple : ./{filename}', output_file, .././some/dir/{filename}"
-        " (relative to input). Will create trees and override files. If not"
-        " specified, output in the input file dir as {filename}_framed. Only"
-        " {filename} is available as key."
-    ),
+    help="TODO",
 )
 
 parser.add_argument(

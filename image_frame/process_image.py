@@ -23,9 +23,7 @@ def exif_dict(filepath):
     img = Image.open(filepath, "r")
 
     exif = {
-        ExifTags.TAGS[k]: v
-        for k, v in img._getexif().items()
-        if k in ExifTags.TAGS
+        ExifTags.TAGS[k]: v for k, v in img._getexif().items() if k in ExifTags.TAGS
     }
 
     # Exposure time
@@ -70,7 +68,7 @@ def resize_img(img: Image, img_size):
     return img
 
 
-def add_frame(img: Image, color, size, shape, acrylic=False):
+def add_frame(img: Image, color, size, shape):
     """Add a frame with the given pixel size, color, and shape.
 
     Parameters
@@ -135,9 +133,7 @@ def tag_text(
     return img
 
 
-def tag_exifs(
-    img: Image, img_path, location, font_size, font_color, border_size
-):
+def tag_exifs(img: Image, img_path, location, font_size, font_color):
     """Add an exifs inscription in the frame at given location."""
     exifs = exif_dict(img_path)
     exif_stamp = (
@@ -166,7 +162,7 @@ def process_image(source: Path, dest: Path, args):
     if args.size:
         img = resize_img(img, args.size)
 
-    # Generate font tsize if not specified
+    # Generate font size if not specified
     font_size = round((max(img.size) / 35) * args.font_size_weight)
 
     # Add exifs inscription to the image

@@ -1,0 +1,4 @@
+rich
+black
+pylint
+isort

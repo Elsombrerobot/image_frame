@@ -13,8 +13,7 @@ def validate_args(args: Namespace):
     """Validate the content and type off all args."""
     if not args.input:
         raise ValueError(
-            "You need to specify one input dir, or one input file"
-            " with --input."
+            "You need to specify one input dir, or one input file" " with --input."
         )
     if not Path(args.input).exists():
         raise ArgumentTypeError(f"{args.input} does not exists.")
@@ -33,8 +32,7 @@ def validate_args(args: Namespace):
 
     if args.frame_size and args.frame_size <= 0:
         raise ArgumentTypeError(
-            f"--frame-size {args.frame_size} is not valid, it must be superior"
-            " to 0."
+            f"--frame-size {args.frame_size} is not valid, it must be superior" " to 0."
         )
 
     if args.font_color and args.font_color not in COLORS:
@@ -67,47 +65,23 @@ def main(args):
         print(f"{source} does not exists.")
         return
 
-    # Format destination path
-    if source.is_dir():
-        for f in list(source.iterdir()):
-            if f.suffix in VALID_EXT:
-                if not args.output:
-                    dest = source / name_format.format(
-                        name=f.stem, ext=f.suffix
-                    )
-                else:
-                    os.chdir(source)
-                    filename = name_format.format(name=f.stem, ext=f.suffix)
-                    dest = Path(
-                        args.output.format(filename=filename)
-                    ).resolve()
+    # Return if source is not a file
 
-                if dest.is_dir():
-                    dest = dest / name_format.format(name=f.stem, ext=f.suffix)
+    if not source.is_file():
+        print(f"{source} is not a file.")
+        return
 
-                dest.parent.mkdir(exist_ok=True, parents=True)
-                print(f"Processing {f.name}...")
-                process_image(f, dest, args)
-                print(f"Saved to {dest}")
+    if source.suffix in VALID_EXT:
+        if not args.output:
+            dest = source.with_name(
+                name_format.format(name=source.stem, ext=source.suffix)
+            )
+        else:
+            os.chdir(source.parent)
+            filename = name_format.format(name=source.stem, ext=source.suffix)
+            dest = Path(args.output.format(filename=filename)).resolve()
 
-    elif source.is_file():
-        if source.suffix in VALID_EXT:
-            if not args.output:
-                dest = source.with_name(
-                    name_format.format(name=source.stem, ext=source.suffix)
-                )
-            else:
-                os.chdir(source.parent)
-                filename = name_format.format(
-                    name=source.stem, ext=source.suffix
-                )
-                dest = Path(args.output.format(filename=filename)).resolve()
-
-            if dest.is_dir():
-                dest = dest / name_format.format(
-                    name=source.stem, ext=source.suffix
-                )
-            dest.parent.mkdir(exist_ok=True, parents=True)
-            print(f"Processing {source.name}...")
-            process_image(source, dest, args)
-            print(f"Saved to {dest}")
+        dest.parent.mkdir(exist_ok=True, parents=True)
+        print(f"Processing {source.name}...")
+        process_image(source, dest, args)
+        print(f"Saved to {dest}")
