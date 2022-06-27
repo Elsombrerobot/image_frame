@@ -1,50 +1,93 @@
 import os
-from argparse import ArgumentTypeError, Namespace
+from argparse import Namespace
 from pathlib import Path
+import sys
 
-from PIL import Image
 
-from config import VALID_EXT, VALID_FRAME_SHAPES, VALID_LOCATIONS
-from process_image import process_image
-from utils import COLORS, available_color
+from image_frame.config import VALID_EXT, VALID_FRAME_SHAPES, VALID_LOCATIONS
+from image_frame.process_image import process_image
+from image_frame.utils import COLORS, available_color
 
 
 def validate_args(args: Namespace):
     """Validate the content and type off all args."""
     if not args.input:
-        raise ValueError(
-            "You need to specify one input dir, or one input file" " with --input."
-        )
+        print("You need to specify one input dir, or one input file" " with --input.")
+        return False
     if not Path(args.input).exists():
-        raise ArgumentTypeError(f"{args.input} does not exists.")
-
+        print(f"{args.input} does not exists.")
+        return False
     if args.frame_shape and args.frame_shape not in VALID_FRAME_SHAPES:
-        raise ArgumentTypeError(
+        print(
             f"-frame-shape {args.frame_shape} is not valid, it must be in :"
             f" {', '.join(VALID_FRAME_SHAPES)}"
         )
-
+        return False
     if args.description and args.description[1] not in VALID_LOCATIONS:
-        raise ArgumentTypeError(
+        print(
             f"--description second arg {args.description[1]} is not valid, it"
             f" must be in : {', '.join(VALID_LOCATIONS)}"
         )
-
+        return False
     if args.frame_size and args.frame_size <= 0:
-        raise ArgumentTypeError(
+        print(
             f"--frame-size {args.frame_size} is not valid, it must be superior" " to 0."
         )
-
+        return False
     if args.font_color and args.font_color not in COLORS:
-        raise ArgumentTypeError(
+        print(
             f"--font-color {args.font_color} is not valid, it must be in :"
             + f"\n\n{COLORS}\n\nSee --available-colors."
         )
+        return False
     if args.color and args.color not in COLORS:
-        raise ArgumentTypeError(
+        print(
             f"--frame-color {args.font_color} is not valid, it must be in :"
             + f"\n\n{COLORS}\n\nSee --available-colors."
         )
+        return False
+
+    # Return if invalid input
+    source = Path(args.input).resolve()
+    if not source.exists():
+        print(f"{source} does not exists.")
+        return False
+    return True
+
+
+def prepare_files(source, output=None):
+    """Iterate over files to process."""
+    source = Path(source)
+    output = Path(output) if output else None
+    if source.is_file():
+        if output:
+            if output.is_dir():
+                dest = output / f"{source.stem}_framed{source.suffix}"
+                yield source, dest
+            else:
+                yield source, output
+        else:
+            dest = source.with_name(f"{source.stem}_framed{source.suffix}")
+            yield source, dest
+
+    elif source.is_dir():
+        sources = []
+        for ext in VALID_EXT:
+            sources.extend(list(source.glob(f"*.{ext}")))
+
+        if not output:
+            for s in sources:
+                dest = source.with_name(f"{s.stem}_framed{s.suffix}")
+                yield s, dest
+
+        elif output.exists() and output.is_dir():
+            for s in sources:
+                dest = output / f"{s.stem}_framed{s.suffix}"
+                yield s, dest
+        else:
+            for s in sources:
+                dest = output / f"{s.stem}_framed{s.suffix}"
+                yield s, dest
 
 
 def main(args):
@@ -55,32 +98,10 @@ def main(args):
         return
 
     # Validate args
-    validate_args(args)
+    if not validate_args(args):
+        sys.exit()
 
-    source = Path(args.input)
-    name_format = "{name}_framed{ext}"
-
-    # Return if invalid input
-    if not source.exists():
-        print(f"{source} does not exists.")
-        return
-
-    # Return if source is not a file
-
-    if not source.is_file():
-        print(f"{source} is not a file.")
-        return
-
-    if source.suffix in VALID_EXT:
-        if not args.output:
-            dest = source.with_name(
-                name_format.format(name=source.stem, ext=source.suffix)
-            )
-        else:
-            os.chdir(source.parent)
-            filename = name_format.format(name=source.stem, ext=source.suffix)
-            dest = Path(args.output.format(filename=filename)).resolve()
-
+    for source, dest in prepare_files(args.input, args.output):
         dest.parent.mkdir(exist_ok=True, parents=True)
         print(f"Processing {source.name}...")
         process_image(source, dest, args)

@@ -1,6 +1,6 @@
 import argparse
 
-from config import VALID_FRAME_SHAPES, VALID_LOCATIONS
+from image_frame.config import VALID_FRAME_SHAPES, VALID_LOCATIONS
 
 parser = argparse.ArgumentParser(
     description="Frame images . Work only with jpeg and png.",
@@ -127,7 +127,7 @@ parser.add_argument(
 )
 
 if __name__ == "__main__":
-    from core import main
+    from image_frame.core import main
 
     args = parser.parse_args()
     main(args)

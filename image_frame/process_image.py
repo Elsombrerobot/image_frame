@@ -3,8 +3,8 @@ from pprint import pprint
 
 from PIL import ExifTags, Image, ImageDraw, ImageFont, ImageOps
 
-from config import FONT_PATH
-from utils import average_color, image_orientation
+from image_frame.config import FONT_PATH
+from image_frame.utils import average_color, image_orientation
 
 
 def exif_dict(filepath):
@@ -174,7 +174,6 @@ def process_image(source: Path, dest: Path, args):
                 args.exif_loc,
                 font_size,
                 args.font_color,
-                percentaged_border_size,
             )
         except AttributeError:
             print("Error while tagging exifs, skipping exif tag.")
